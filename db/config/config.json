@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "mona",
+    "username": "jarvis",
     "password": null,
     "database": "notebook_db",
     "host": "127.0.0.1",

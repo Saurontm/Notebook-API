@@ -2,7 +2,7 @@ const { Notebook, Note } = require("../../db/models");
 
 exports.fetchNotebook = async (notebookId, next) => {
   try {
-    const notebook = await Notebook.findbyPk(notebookId);
+    const notebook = await Notebook.findByPk(notebookId);
     return notebook;
   } catch (error) {
     next(error);
@@ -27,7 +27,18 @@ exports.notebookFetch = async (req, res, next) => {
 exports.notebookCreate = async (req, res, next) => {
   try {
     const newNotebook = await Notebook.create(req.body);
+    console.log(req.body);
     res.status(201).json(newNotebook);
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.noteCreate = async (req, res, next) => {
+  try {
+    req.body.NotebookID = req.notebook.id;
+    const newNote = await Note.create(req.body);
+    res.status(201).json(newNote);
   } catch (error) {
     next(error);
   }

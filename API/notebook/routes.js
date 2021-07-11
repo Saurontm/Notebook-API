@@ -1,11 +1,16 @@
 const express = require("express");
-const { noteFetch, fetchNotebook } = require("./controllers");
+const {
+  notebookFetch,
+  fetchNotebook,
+  notebookCreate,
+  noteCreate,
+} = require("./controllers");
 const router = express.Router();
 
-router.param(notebookId, async (req, res, next, notebookId) => {
+router.param("notebookId", async (req, res, next, notebookId) => {
   const notebook = await fetchNotebook(notebookId, next);
   if (notebook) {
-    res.notebook = notebook;
+    req.notebook = notebook;
     next();
   } else {
     const error = new Error("notebook not found");
