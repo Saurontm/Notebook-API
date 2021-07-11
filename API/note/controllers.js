@@ -13,11 +13,7 @@ exports.noteFetch = async (req, res, next) => {
   try {
     const note = await Note.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
-      include: {
-        model: Note,
-        as: "notes",
-        attributes: ["id"],
-      },
+      include: { model: Notebook, as: "notebook", attributes: ["name"] },
     });
     res.json(note);
   } catch (error) {

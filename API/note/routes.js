@@ -7,7 +7,7 @@ const {
   deleteNote,
 } = require("./controllers");
 const router = express.Router();
-router.param("notesId", async (req, res, next, noteId) => {
+router.param("noteId", async (req, res, next, noteId) => {
   const note = await fetchNote(noteId, next);
   if (note) {
     req.note = note;

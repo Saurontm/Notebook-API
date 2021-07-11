@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/notebooks/", notebookRoutes);
-app.use("/note/", noteRoutes);
+app.use("/notes/", noteRoutes);
 
 const run = async () => {
   try {
