@@ -1,27 +1,25 @@
 const express = require("express");
 
 const {
-  notebookFetch,
-  notebookCreate,
-  noteCreate,
-  fetchNotebook,
+  noteFetch,
+  updateNote,
+  fetchNote,
+  deleteNote,
 } = require("./controllers");
 const router = express.Router();
-router.param("notebookId", async (req, res, next, notebookId) => {
-  const notebook = await fetchNotebook(notebookId, next);
-  if (notebook) {
-    req.notebook = notebook;
+router.param("notesId", async (req, res, next, noteId) => {
+  const note = await fetchNote(noteId, next);
+  if (note) {
+    req.note = note;
     next();
   } else {
-    const error = new Error("notebook not found");
+    const error = new Error("note not found");
     error.status = 404;
     next(error);
   }
 });
 
-router.get("/", notebookFetch);
-
-router.post("/", notebookCreate);
-router.post("/:notebookId/notes", noteCreate);
-
+router.get("/", noteFetch);
+router.delete("/:noteId", deleteNote);
+router.put("/:noteId", updateNote);
 module.exports = router;

@@ -1,17 +1,17 @@
 const { Notebook, Note } = require("../../db/models");
 
-exports.fetchNotebook = async (notebookId, next) => {
+exports.fetchNote = async (noteId, next) => {
   try {
-    const notebook = await Notebook.findByPk(notebookId);
-    return notebook;
+    const note = await Note.findByPk(noteId);
+    return note;
   } catch (error) {
     next(error);
   }
 };
 
-exports.notebookFetch = async (req, res, next) => {
+exports.noteFetch = async (req, res, next) => {
   try {
-    const notebooks = await Notebook.findAll({
+    const note = await Note.findAll({
       attributes: { exclude: ["createdAt", "updatedAt"] },
       include: {
         model: Note,
@@ -19,26 +19,25 @@ exports.notebookFetch = async (req, res, next) => {
         attributes: ["id"],
       },
     });
-    res.json(notebooks);
+    res.json(note);
   } catch (error) {
     next(error);
   }
 };
 
-exports.notebookCreate = async (req, res, next) => {
+exports.deleteNote = async (req, res, next) => {
   try {
-    const newNotebook = await Notebook.create(req.body);
-    res.status(201).json(newNotebook);
+    await req.note.destroy();
+    res.status(204).end(); // NO CONTENT
   } catch (error) {
     next(error);
   }
 };
-
-exports.noteCreate = async (req, res, next) => {
+exports.updateNote = async (req, res, next) => {
   try {
-    req.body.notebookId = req.notebook.id;
-    const newNote = await Note.create(req.body);
-    res.status(201).json(newNote);
+    if (req.file) req.body.image = `http://${req.get("host")}/${req.file.path}`;
+    const updatedNote = await req.note.update(req.body);
+    res.json(updatedNote);
   } catch (error) {
     next(error);
   }
